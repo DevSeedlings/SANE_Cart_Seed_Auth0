@@ -22,12 +22,26 @@ passport.use(new Auth0Strategy(config.authConfig, function(accessToken, refreshT
         }
         console.log('User created');
 
-        return done(null, user[0]);
+        db.order.insert([user[0].id], function(err, order) {
+          if (err) {
+            console.log('DB Create, durring user create: ', err);
+          }
+
+          user[0].order_id = order[0].id;
+          return done(null, user[0]);
+        })
       })
     }
     else {
       console.log('User found');
-      return done(null, user[0]);
+      db.order.read_incomplete([user[0].id], function(err, order) {
+        if (err) {
+          return console.log("Find User Auth, Order not found");
+        }
+
+        user[0].order_id = order[0].id;
+        return done(null, user[0]);
+      });
     }
   });
 }));

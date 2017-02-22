@@ -56,11 +56,28 @@ var isAuthed = function(req, res, next) {
 };
 
 // CONTROLLERS //
-var UserCtrl = require('./controllers/UserCtrl');
+var userCtrl = require('./controllers/userCtrl');
+var orderCtrl = require('./controllers/orderCtrl');
+var productCtrl = require('./controllers/productCtrl');
 
 // USER ENDPOINTS //
-app.get('/api/me', UserCtrl.me);
-app.put('/api/user/current', isAuthed, UserCtrl.update);
+app.get('/api/me', userCtrl.me);
+app.put('/api/user/current', isAuthed, userCtrl.update);
+
+// ORDER ENDPOINTS //
+app.get('/api/order/complete', orderCtrl.complete)
+app.get('/api/order', orderCtrl.read);
+app.post('/api/order/add', orderCtrl.addToCart);
+app.put('/api/order/update/:id', orderCtrl.updateItemInCart);
+app.delete('/api/order/delete/:id', orderCtrl.deleteFromCart);
+
+// PODUCTS ENDPOINTS //
+app.get('/api/products', productCtrl.read);
+// app.post('/api/products', productCtrl.create);
+// app.put('/api/products/:id', productCtrl.update);
+// app.delete('/api/products/:id', productCtrl.delete);
+
+
 
 // CONNECTIONS //
 var port = config.PORT;

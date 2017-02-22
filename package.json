@@ -6,13 +6,12 @@
     "start": "node server/index.js"
   },
   "dependencies": {
-    "bcryptjs": "^2.3.0",
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "express-session": "^1.12.1",
     "massive": "^2.5.0",
     "passport": "^0.3.2",
-    "passport-local": "^1.0.0"
+    "passport-auth0": "^0.6.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -20,5 +19,18 @@
     "gulp-ng-annotate": "^2.0.0",
     "gulp-nodemon": "^2.2.1",
     "gulp-sass": "^2.3.2"
-  }
+  },
+  "description": "This is a fully functional basic SANE stack app seed. It has passport, gulp, and sass capabilities (gulp and sass not required for use).",
+  "main": "server/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevSeedlings/SANE_Seed_Local_Auth.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DevSeedlings/SANE_Seed_Local_Auth/issues"
+  },
+  "homepage": "https://github.com/DevSeedlings/SANE_Seed_Local_Auth#readme"
 }

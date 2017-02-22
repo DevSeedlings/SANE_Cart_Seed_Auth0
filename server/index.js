@@ -9,7 +9,6 @@ var config = require('./config');
 
 // EXPRESS //
 var app = module.exports = express();
-
 app.use(express.static(__dirname + './../public'));
 app.use(bodyParser.json());
 
@@ -21,14 +20,33 @@ var massiveServer = massive.connectSync({
 app.set('db', massiveServer);
 var db = app.get('db');
 
+// DB SETUP //
 var dbSetup = require('./services/dbSetup');
 dbSetup.run();
 
-// CONTROLLERS //
-var UserCtrl = require('./controllers/UserCtrl');
-
-// SERVICES //
+// SESSION AND PASSPORT //
 var passport = require('./services/passport');
+app.use(session({
+	secret: config.SESSION_SECRET,
+	saveUninitialized: false,
+	resave: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// PASSPORT ENDPOINTS //
+app.get('/auth', passport.authenticate('auth0'));
+
+app.get('/auth/callback', passport.authenticate('auth0', {
+  successRedirect: '/#!/profile',
+  failureRedirect: '/#!/'
+}));
+app.get('/api/logout', function(req, res, next) {
+	req.logout();
+	return res.status(200)
+		.send('logged out');
+});
 
 // POLICIES //
 var isAuthed = function(req, res, next) {
@@ -37,29 +55,11 @@ var isAuthed = function(req, res, next) {
 	return next();
 };
 
-// Session and passport //
-app.use(session({
-	secret: config.SESSION_SECRET,
-	saveUninitialized: false,
-	resave: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+// CONTROLLERS //
+var UserCtrl = require('./controllers/UserCtrl');
 
-// Passport Endpoints //
-app.post('/api/login', passport.authenticate('local', {
-	successRedirect: '/api/me'
-}));
-app.get('/api/logout', function(req, res, next) {
-	req.logout();
-	return res.status(200)
-		.send('logged out');
-});
-
-// User Endpoints //
-app.post('/api/register', UserCtrl.register);
-// app.get('/api/user', UserCtrl.read);
-app.get('/api/me', isAuthed, UserCtrl.me);
+// USER ENDPOINTS //
+app.get('/api/me', UserCtrl.me);
 app.put('/api/user/current', isAuthed, UserCtrl.update);
 
 // CONNECTIONS //

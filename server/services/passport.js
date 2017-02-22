@@ -1,42 +1,35 @@
 // PASSPORT //
 var passport = require('passport');
-var LocalStrategy = require('passport-local')
-	.Strategy;
-
-// BCRYPT //
-var bcrypt = require('bcryptjs');
+var Auth0Strategy = require('passport-auth0');
 
 // APP //
 var app = require('./../index');
 var db = app.get('db');
 
-// VERIFY PASSWORD //
-function verifyPassword(submitedPass, userPass) {
-	return bcrypt.compareSync(submitedPass, userPass);
-}
+// CONFIG //
+var config = require('./../config');
 
 // RUN WHEN LOGGING IN //
-passport.use(new LocalStrategy({
-	usernameField: 'email',
-	passwordField: 'password'
-}, function(email, password, done) {
-	email = email.toLowerCase();
+passport.use(new Auth0Strategy(config.authConfig, function(accessToken, refreshToken, extraParams, profile, done) {
+  db.user.search_email([profile.displayName], function(err, user) {
+    if (err) {
+      return done(err);
+    }
+    else if (!user.length) {
+      db.user.create([profile.nickname, profile.displayName], function(err, user) {
+        if (err) {
+          return done(err);
+        }
+        console.log('User created');
 
-	db.user.user_search_email([email], function(err, user) {
-		user = user[0];
-
-		// If err, return err
-		if (err) done(err);
-
-		// If no user if found, return false
-		if (!user) return done(null, false);
-
-		// If user is found, check to see if passwords match. If so, return user
-		if (verifyPassword(password, user.password)) return done(null, user);
-
-		// If no match, return false
-		return done(null, false);
-	});
+        return done(null, user[0]);
+      })
+    }
+    else {
+      console.log('User found');
+      return done(null, user[0]);
+    }
+  });
 }));
 
 // Puts the user on the session
@@ -44,6 +37,7 @@ passport.serializeUser(function(user, done) {
 	done(null, user);
 });
 passport.deserializeUser(function(user, done) {
+  console.log('user: ', user);
 	done(null, user);
 });
 

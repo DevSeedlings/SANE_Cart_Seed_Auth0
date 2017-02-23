@@ -1,3 +1,3 @@
 SELECT * FROM orders
 WHERE user_id = $1
-   && completed_date = NULL;
+   AND completed_date IS NULL;

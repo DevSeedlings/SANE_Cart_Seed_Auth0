@@ -36,7 +36,7 @@ gulp.task('index', function() {
 		.pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build', ['js', 'sass', 'html']);
+gulp.task('build', ['js', 'sass', 'index']);
 
 gulp.task('watch', function() {
 	gulp.watch(paths.jsSource, ['js']);

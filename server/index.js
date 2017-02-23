@@ -9,7 +9,7 @@ var config = require('./config');
 
 // EXPRESS //
 var app = module.exports = express();
-app.use(express.static(__dirname + './../public'));
+app.use(express.static(__dirname + './../dist'));
 app.use(bodyParser.json());
 
 // MASSIVE //
@@ -39,7 +39,7 @@ app.use(passport.session());
 app.get('/auth', passport.authenticate('auth0'));
 
 app.get('/auth/callback', passport.authenticate('auth0', {
-  successRedirect: '/#!/profile',
+  successRedirect: '/#!/products',
   failureRedirect: '/#!/'
 }));
 app.get('/api/logout', function(req, res, next) {
@@ -65,7 +65,7 @@ app.get('/api/me', userCtrl.me);
 app.put('/api/user/current', isAuthed, userCtrl.update);
 
 // ORDER ENDPOINTS //
-app.get('/api/order/complete', orderCtrl.complete)
+app.put('/api/order/complete', orderCtrl.complete)
 app.get('/api/order', orderCtrl.read);
 app.post('/api/order/add', orderCtrl.addToCart);
 app.put('/api/order/update/:id', orderCtrl.updateItemInCart);

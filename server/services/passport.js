@@ -36,9 +36,10 @@ passport.use(new Auth0Strategy(config.authConfig, function(accessToken, refreshT
       console.log('User found');
       db.order.read_incomplete([user[0].id], function(err, order) {
         if (err) {
-          return console.log("Find User Auth, Order not found");
+          return console.log("Find User Auth, Order not found", err);
         }
 
+        console.log('order: ', order);
         user[0].order_id = order[0].id;
         return done(null, user[0]);
       });

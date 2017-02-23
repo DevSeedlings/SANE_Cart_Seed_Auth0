@@ -3,6 +3,7 @@ var db = app.get('db');
 
 module.exports = {
   complete: function (req, res, next) {
+    console.log("Completing oder");
     db.order.update([req.user.order_id, new Date(), undefined], function(err, order) {
       if (err) {
         console.log('complete order err: ', err);
@@ -64,7 +65,7 @@ module.exports = {
     });
   },
   deleteFromCart: function(req, res, next) {
-    db.product.delete_from_order([req.params.id], function(err, response) {
+    db.product.remove_from_order([req.params.id], function(err, response) {
       if (err) {
         console.log('Delete product in cart err: ', err);
         return res.status(500).send(err);

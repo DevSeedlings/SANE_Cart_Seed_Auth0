@@ -1,5 +1,5 @@
 {
-  "name": "exampleLocalAuth",
+  "name": "SANE_Cart_Seed_Auth0",
   "version": "0.0.0",
   "private": false,
   "scripts": {
@@ -20,17 +20,17 @@
     "gulp-nodemon": "^2.2.1",
     "gulp-sass": "^2.3.2"
   },
-  "description": "This is a fully functional basic SANE stack app seed. It has passport, gulp, and sass capabilities (gulp and sass not required for use).",
+  "description": "This is a fully functional basic SANE stack cart app seed. It has passport (with Auth0), gulp, and sass capabilities.",
   "main": "server/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DevSeedlings/SANE_Seed_Local_Auth.git"
+    "url": "git+https://github.com/DevSeedlings/SANE_Seed_Auth0.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DevSeedlings/SANE_Seed_Local_Auth/issues"
+    "url": "https://github.com/DevSeedlings/SANE_Seed_Auth0/issues"
   },
-  "homepage": "https://github.com/DevSeedlings/SANE_Seed_Local_Auth#readme"
+  "homepage": "https://github.com/DevSeedlings/SANE_Seed_Auth0#readme"
 }

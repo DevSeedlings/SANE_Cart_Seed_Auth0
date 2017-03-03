@@ -1,2 +1,2 @@
 SELECT * FROM orders
-WHERE id = $1;
+WHERE order_id = $1;

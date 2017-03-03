@@ -7,7 +7,7 @@ var nodemon = require('gulp-nodemon');
 var paths = {
 	jsSource: ['public/app/**/*.js'],
 	sassSource: ['public/**/*.sass'], // Change sass to scss if you want to work with it instead.
-	indexSource: ['public/**/*.html', 'public/**/*.css'],
+	copySource: ['public/**/*.html', 'public/**/*.css'],
 	server: ['server/index.js']
 };
 
@@ -31,17 +31,17 @@ gulp.task('js', function() {
 		.pipe(gulp.dest('./dist'));
 });
 
-gulp.task('index', function() {
-	gulp.src(paths.indexSource)
+gulp.task('copy', function() {
+	gulp.src(paths.copySource)
 		.pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build', ['js', 'sass', 'index']);
+gulp.task('build', ['js', 'sass', 'copy']);
 
 gulp.task('watch', function() {
 	gulp.watch(paths.jsSource, ['js']);
 	gulp.watch(paths.sassSource, ['sass']);
-	gulp.watch(paths.indexSource, ['index']);
+	gulp.watch(paths.copySource, ['copy']);
 });
 
 gulp.task('default', ['build', 'watch']); // add 'serve' to the array if you want gulp to run nodemon as well.

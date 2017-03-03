@@ -9,10 +9,19 @@ var config = require('./config');
 
 // EXPRESS //
 var app = module.exports = express();
+
 app.use(express.static(__dirname + './../dist'));
 app.use(bodyParser.json());
 
-// MASSIVE //
+app.use(session({
+	secret: config.SESSION_SECRET,
+	saveUninitialized: false,
+	resave: false
+}));
+
+
+
+// MASSIVE AND DB SETUP //
 var massiveUri = config.MASSIVE_URI;
 var massiveServer = massive.connectSync({
 	connectionString: massiveUri
@@ -20,26 +29,20 @@ var massiveServer = massive.connectSync({
 app.set('db', massiveServer);
 var db = app.get('db');
 
-// DB SETUP //
 var dbSetup = require('./services/dbSetup');
 dbSetup.run();
 
+
+
 // SESSION AND PASSPORT //
 var passport = require('./services/passport');
-app.use(session({
-	secret: config.SESSION_SECRET,
-	saveUninitialized: false,
-	resave: false
-}));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
 // PASSPORT ENDPOINTS //
 app.get('/auth', passport.authenticate('auth0'));
-
 app.get('/auth/callback', passport.authenticate('auth0', {
-  successRedirect: '/#!/products',
+  successRedirect: '/#!/profile',
   failureRedirect: '/#!/'
 }));
 app.get('/api/logout', function(req, res, next) {
@@ -55,27 +58,27 @@ var isAuthed = function(req, res, next) {
 	return next();
 };
 
+
+
 // CONTROLLERS //
 var userCtrl = require('./controllers/userCtrl');
 var orderCtrl = require('./controllers/orderCtrl');
 var productCtrl = require('./controllers/productCtrl');
 
 // USER ENDPOINTS //
-app.get('/api/me', userCtrl.me);
-app.put('/api/user/current', isAuthed, userCtrl.update);
+app.get('/api/me', isAuthed, userCtrl.me);
+app.put('/api/user/current', isAuthed, userCtrl.update_current);
 
 // ORDER ENDPOINTS //
-app.put('/api/order/complete', orderCtrl.complete)
-app.get('/api/order', orderCtrl.read);
-app.post('/api/order/add', orderCtrl.addToCart);
-app.put('/api/order/update/:id', orderCtrl.updateItemInCart);
-app.delete('/api/order/delete/:id', orderCtrl.deleteFromCart);
+app.put('/api/order/complete', isAuthed, orderCtrl.complete);
+app.get('/api/order', isAuthed, orderCtrl.read);
+app.post('/api/order/add', isAuthed, orderCtrl.addToCart);
+app.put('/api/order/update/:id', isAuthed, orderCtrl.updateItemInCart);
+app.delete('/api/order/delete/:id', isAuthed, orderCtrl.deleteFromCart);
 
 // PODUCTS ENDPOINTS //
 app.get('/api/products', productCtrl.read);
-// app.post('/api/products', productCtrl.create);
-// app.put('/api/products/:id', productCtrl.update);
-// app.delete('/api/products/:id', productCtrl.delete);
+app.get('/api/product/:id', productCtrl.read_id);
 
 
 

@@ -1,0 +1,17 @@
+CART
+<br><br>
+Total: {{orderTotal(order.products) | currency}}<br>
+<button type="button" ng-click="submitOrder()">Submit Order</button>
+<br><br>
+
+<div ng-repeat="product in order.products track by $index">
+  {{product.name}}
+  {{product.price * product.qty | currency}}
+  <input type="number" min="1" ng-model="product.qty" ng-change="updateQty(product.pio_id, product.qty)">
+  <button type="button" name="button" ng-click="deleteProduct(product.pio_id, $index)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+  <hr>
+</div>
+
+<div  ng-hide="order.products.length">
+  No products in cart
+</div>

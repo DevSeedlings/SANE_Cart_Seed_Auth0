@@ -1,4 +1,19 @@
 <div class="nav">
-  <a ui-sref="home">Home</a> <a ui-sref="login">Login</a> <a ng-click="logout()">logout</a>
+  <div class="logo">
+    <a ui-sref="home">Home</a>
+    <a ui-sref="shop">Shop</a>
+  </div>
+
+  <div class="userLinks">
+    <a ng-show="user" ui-sref="profile">
+      {{user.name_first}}
+      <span ng-show="user.name_last">
+        {{user.name_last}}
+      </span>
+    </a>
+    <a ng-show="user" ui-sref="cart">Cart</a>
+    <a ng-hide="user" ng-href="/auth">Login</a>
+    <a ng-show="user" ng-click="logout()">logout</a>
+  </div>
 </div>
 <br><br>

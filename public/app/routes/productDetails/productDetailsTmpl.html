@@ -1,0 +1,26 @@
+PRODUCT
+<br><br>
+
+<div class="product_details">
+  <h2>
+    {{product.name}}
+  </h2>
+
+  <div
+    class="product_detail_image"
+    ng-style="image"
+    ng-show="product.image_url">
+  </div>
+
+  <img src="http://placehold.it/400x300" ng-hide="product.image_url">
+
+  {{product.price | currency}}
+  <br><br>
+
+  {{product.description}}
+  <br><br>
+
+  <input type="number" min="1" ng-model="qty">
+  <br>
+  <button type="button" ng-click="addToCart(product.product_id, qty)">Add to cart</button>
+</div>

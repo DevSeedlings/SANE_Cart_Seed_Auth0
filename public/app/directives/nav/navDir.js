@@ -1,4 +1,4 @@
-angular.module('app').directive('navDir', function() {
+angular.module('app').directive('nav', function() {
   return {
     restrict: 'EA',
     templateUrl: './app/directives/nav/navTmpl.html',

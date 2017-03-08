@@ -1,19 +1,17 @@
 ORDERS
+<br><br>
 
-<button type="button" name="button" ng-click="submit()">Submit Order</button>
-<br>
-Total: {{total | currency}}
-<hr>
+<div ng-repeat="order in orders track by $index">
+  Order#: {{order.order_id}}<br>
+  Order Total: {{orderTotal(order.products) | currency}}
+  <br><br>
 
-<div class="" ng-repeat="product in orderData.products">
-  {{product}}
-  Name: {{product.name}}<br>
-  Desc: {{product.description}}<br>
-  Price: {{product.price | currency}}<br>
-  QTY: {{product.qty}}<br>
-  Total: {{product.price * product.qty | currency}}
-  <br>
-  <input type="number" name="" value="" min="0" ng-model="product.qty"  ng-change="updateItem(product.id, product.qty)"><br>
-  <button type="button" name="button" ng-click="deleteItem(product.id)">Delete</button>
+  <div ng-repeat="product in order.products track by $index">
+    Name: {{product.name}}<br>
+    Total: {{product.price * product.qty | currency}}<br>
+    Qty: {{product.qty}}
+    <br><br>
+  </div>
+
   <hr>
 </div>

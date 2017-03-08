@@ -84,7 +84,7 @@ passport.use(new Auth0Strategy(config.AUTH_CONFIG, function(accessToken, refresh
           done(err);
         }
 
-        user.order_id = order[0].id;
+        user.order_id = order[0].order_id;
         return done(null, user);
       });
     }

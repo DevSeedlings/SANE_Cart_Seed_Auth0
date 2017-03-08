@@ -1,0 +1,31 @@
+<div class="product" ng-mouseover="shadow=true" ng-mouseleave="shadow=false">
+  <div class="product_name">
+    {{product.name}}
+  </div>
+
+  <div ng-show="product.image_url" ng-style="image" class="product_image"></div>
+  <img ng-hide="product.image_url" ng-src="http://placehold.it/200x150">
+
+  <div class="product_price">
+    {{product.price | currency}}
+  </div>
+
+  <div class="product_desc">
+    {{product.description}}
+  </div>
+
+  <span ng-show="shadow">
+    <div class="product_shadow"></div>
+
+    <div class="product_shadow_buttons">
+      <a ui-sref="productDetails({product_id: product.product_id})">View Details</a>
+
+      <br>
+      <br>
+
+      <button class="product_add" type="button" ng-show="shadow" ng-click="addToCart(product.product_id)">
+        Add to cart
+      </button>
+    </div>
+  </span>
+</div>

@@ -1,0 +1,61 @@
+.product
+  width: 200px
+  height: 350px
+  position: relative
+  display: inline-block
+  vertical-align: top
+
+  .product_name
+    width: 100%
+    background-color: gray
+    color: white
+    text-align: center
+
+  .product_image
+    width: 100%
+    height: 150px
+    background-position: center
+    background-repeat: no-repeat
+    background-size: cover
+    box-sizing: border-box
+
+  .product_price
+    padding: 5px 10px
+
+  .product_desc
+    padding: 5px 10px
+    width: 100%
+    height: 149px
+    overflow: hidden
+    box-sizing: border-box
+
+  .product_shadow
+    background-color: black
+    height: 100%
+    width: 100%
+    opacity: .5
+    position: absolute
+    top: 0
+    left: 0
+
+  .product_shadow_buttons
+    position: absolute
+    top: 50%
+    left: 50%
+    width: 100%
+    transform: translate(-50%, -50%)
+    text-align: center
+
+    a
+      text-decoration: none
+      color: white
+      z-index: 1
+      font-size: 1.3em
+
+    .product_add
+      border: 1px solid white
+      border-radius: 3px
+      background-color: inherit
+      z-index: 2
+      color: white
+      font-size: 1.2em

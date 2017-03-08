@@ -40,11 +40,27 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // PASSPORT ENDPOINTS //
-app.get('/auth', passport.authenticate('auth0'));
-app.get('/auth/callback', passport.authenticate('auth0', {
-  successRedirect: '/#!/profile',
-  failureRedirect: '/#!/'
-}));
+app.get('/auth', function (req, res, next) {
+	// Is a different state required for callback?
+	if (req.query.state)
+		req.session.state = req.query.state;
+
+  passport.authenticate('auth0')(req, res, next);
+});
+app.get('/auth/callback', function(req, res, next) {
+	// Check where the user should be redirected
+	var state = 'profile';
+	if (req.session.state)
+		state = req.session.state;
+
+	req.session.state = null;
+
+	passport.authenticate('auth0', {
+	  successRedirect: '/#!/' + state,
+	  failureRedirect: '/#!/'
+	})(req, res, next);
+});
+
 app.get('/api/logout', function(req, res, next) {
 	req.logout();
 	return res.status(200)
@@ -66,11 +82,12 @@ var orderCtrl = require('./controllers/orderCtrl');
 var productCtrl = require('./controllers/productCtrl');
 
 // USER ENDPOINTS //
-app.get('/api/me', isAuthed, userCtrl.me);
+app.get('/api/me', userCtrl.me);
 app.put('/api/user/current', isAuthed, userCtrl.update_current);
 
 // ORDER ENDPOINTS //
-app.put('/api/order/complete', isAuthed, orderCtrl.complete);
+app.put('/api/order/complete', isAuthed, orderCtrl.complete, orderCtrl.read);
+app.get('/api/order/history', isAuthed, orderCtrl.orderHistory);
 app.get('/api/order', isAuthed, orderCtrl.read);
 app.post('/api/order/add', isAuthed, orderCtrl.addToCart);
 app.put('/api/order/update/:id', isAuthed, orderCtrl.updateItemInCart);

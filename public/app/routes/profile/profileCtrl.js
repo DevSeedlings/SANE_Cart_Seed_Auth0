@@ -1,11 +1,11 @@
 // INITILIZE CONTROLLER
 // ============================================================
 angular.module("app")
-  .controller("homeCtrl", function($scope) {
+  .controller("profileCtrl", function($scope, user) {
 
     // VARIABLES
     // ============================================================
-
+    $scope.user = user;
 
     // FUNCTIONS
     // ============================================================

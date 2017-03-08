@@ -1,11 +1,12 @@
 // INITILIZE CONTROLLER
 // ============================================================
 angular.module("app")
-  .controller("homeCtrl", function($scope) {
+  .controller("shopCtrl", function($scope, products, user) {
 
     // VARIABLES
     // ============================================================
-
+    $scope.products = products.data;
+    $scope.user = user;
 
     // FUNCTIONS
     // ============================================================

@@ -26,11 +26,7 @@ angular.module("app")
 					url: '/api/me'
 				})
 				.then(function(response) {
-					if (response.data) {
-						$rootScope.$emit('user', response.data);
-					} else {
-						$rootScope.$emit('user', null);
-					}
+					$rootScope.$emit('user', response.data);
 					return response;
 				});
 		};
